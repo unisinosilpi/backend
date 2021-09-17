@@ -1,5 +1,5 @@
 export interface IRequest {
-  body: unknown;
+  body: never;
 }
 
 export interface IResponse {
@@ -8,5 +8,5 @@ export interface IResponse {
 }
 
 export interface IHttpService {
-  handle(request: IRequest): IResponse;
+  handle(request: IRequest): Promise<IResponse>;
 }
