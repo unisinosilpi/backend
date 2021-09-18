@@ -1,5 +1,6 @@
 export interface IRequest {
-  body: never;
+  body: any;
+  params: any;
 }
 
 export interface IResponse {

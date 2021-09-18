@@ -1,0 +1,12 @@
+{
+  "type": "mock",
+  "project_id": "mock",
+  "private_key_id": "mock",
+  "private_key": "GENERATE A PRIVATE KEY AT GCP FIRESTORE PANEL [https://console.cloud.google.com/iam-admin/iam?authuser=0&project=smartvitalsigns]",
+  "client_email": "mock",
+  "client_id": "mock",
+  "auth_uri": "mock",
+  "token_uri": "mock",
+  "auth_provider_x509_cert_url": "mock",
+  "client_x509_cert_url": "mock"
+}
