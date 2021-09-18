@@ -1,14 +1,21 @@
-import { initializeApp } from 'firebase/app';
+import admin from 'firebase-admin';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyCDVrAjSoSBnlYm2JdbH-pQ1z2qcJGb9Q4',
-  authDomain: 'smartvitalsigns.firebaseapp.com',
-  projectId: 'smartvitalsigns',
-  storageBucket: 'smartvitalsigns.appspot.com',
-  messagingSenderId: '634689667157',
-  appId: '1:634689667157:web:1ded246cdb31bd70dc14dc',
-};
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const serviceAccount = require('./firebase-key');
 
-const firebaseApp = initializeApp(firebaseConfig);
+class FirebaseConfig {
+  static instance: FirebaseFirestore.Firestore;
 
-export { firebaseApp };
+  constructor() {
+    if (!FirebaseConfig.instance) {
+      admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+      FirebaseConfig.instance = admin.firestore();
+    }
+  }
+
+  getInstance(): FirebaseFirestore.Firestore {
+    return FirebaseConfig.instance;
+  }
+}
+
+export { FirebaseConfig };

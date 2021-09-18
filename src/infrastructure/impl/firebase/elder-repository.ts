@@ -1,18 +1,14 @@
-import admin from 'firebase-admin';
+import { FirebaseConfig } from './config/firebase';
 import { ElderDoesNotExist } from '../../../domain/errors/elder-does-not-exist';
 import { Elder } from '../../../domain/models/elder';
 import { VitalSigns } from '../../../domain/models/vital-signs';
 import { IElderRepository } from '../../contracts/elder-repository';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const serviceAccount = require('./firebase-key.json');
-
 class ElderRepository implements IElderRepository {
   private readonly eldersCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
 
   constructor() {
-    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-    this.eldersCollection = admin.firestore().collection('elders');
+    this.eldersCollection = new FirebaseConfig().getInstance().collection('elders');
   }
 
   async registerVitalSigns(vitalSigns: VitalSigns, nurseId: string, elderId: string): Promise<Elder> {
@@ -26,6 +22,15 @@ class ElderRepository implements IElderRepository {
     const { id, ...elderData } = elder;
     await elderDocRef.set(elderData);
     return elder;
+  }
+
+  async getAll(): Promise<Elder[]> {
+    const elders: Elder[] = (await this.eldersCollection.get()).docs.map((doc) => {
+      const elder = doc.data() as Elder;
+      return { ...elder, id: doc.id };
+    });
+
+    return elders;
   }
 }
 
